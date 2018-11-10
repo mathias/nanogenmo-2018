@@ -5,7 +5,40 @@ let n = new seaduck.Narrative({
     {
       "name": "Chris",
       "properties": {
-        "sleepiness": 0
+        "has_drink": false,
+        "sleepiness": 0,
+        "happiness": 0,
+        "hungry": true
+      },
+      "tags": ["person"]
+    },
+    {
+      "name": "Max",
+      "properties": {
+        "has_drink": false,
+        "sleepiness": 0,
+        "happiness": 0,
+        "hungry": true
+      },
+      "tags": ["person"]
+    },
+    {
+      "name": "Rory",
+      "properties": {
+        "has_drink": false,
+        "sleepiness": 0,
+        "happiness": 0,
+        "hungry": true
+      },
+      "tags": ["person"]
+    },
+    {
+      "name": "Horatio",
+      "properties": {
+        "has_drink": false,
+        "sleepiness": 0,
+        "happiness": 0,
+        "hungry": true
       },
       "tags": ["person"]
     },
@@ -30,22 +63,6 @@ let n = new seaduck.Narrative({
       "tags": ["room"]
     },
     {
-      "name": "Max",
-      "properties": {
-        "has_drink": false,
-        "sleepiness": 0
-      },
-      "tags": ["person"]
-    },
-    {
-      "name": "Rory",
-      "properties": {
-        "has_drink": false,
-        "sleepiness": 0
-      },
-      "tags": ["person"]
-    },
-    {
       "name": "coffee",
       "properties": {},
       "tags": ["drink"]
@@ -62,6 +79,30 @@ let n = new seaduck.Narrative({
       },
       "tags": ["bed"]
     },
+    {
+      "name": "cookie",
+      "properties": {
+        "tastiness": 2,
+        "eaten": false
+      },
+      "tags": ["food"]
+    },
+    {
+      "name": "spinach",
+      "properties": {
+        "tastiness": 1,
+        "eaten": false
+      },
+      "tags": ["food"]
+    },
+    {
+      "name": "cake",
+      "properties": {
+        "tastiness": 3,
+        "eaten": false
+      },
+      "tags": ["food"]
+    }
   ],
   "initialize": function*() {
     // set up map
@@ -90,6 +131,11 @@ let n = new seaduck.Narrative({
       "currently in", this.noun("Rory"), this.noun("study"));
     yield new seaduck.StoryEvent(
       "in", this.noun("Rory"), this.noun("study"));
+
+    this.relate(
+      "currently in", this.noun("Horatio"), this.noun("bedroom"));
+    yield new seaduck.StoryEvent(
+      "in", this.noun("Horatio"), this.noun("bedroom"));
 
     this.relate(
       "currently in", this.noun("coffee"), this.noun("kitchen"));
@@ -193,7 +239,7 @@ let n = new seaduck.Narrative({
     {
       "match": ["#person", "#bed"],
       "when": function(a, b) {
-        return a.properties.sleepiness >= 10 
+        return a.properties.sleepiness >= 10
           && !this.relatedByTag("sleepingIn", a, "bed")
           && !b.properties.occupied;
       },
@@ -210,6 +256,49 @@ let n = new seaduck.Narrative({
       },
       "action": function*(a, b) {
         yield new seaduck.StoryEvent("asleep", a, b);
+      }
+    },
+     {
+      "name": "eat",
+      "match": ["#person", "#food"],
+      "when": function(a, b) {
+        return a.properties.hungry
+          && b.properties.tastiness > 0
+          && !b.properties.eaten;
+      },
+      "action": function*(a, b) {
+        yield (new seaduck.StoryEvent("eat", a, b));
+        a.properties.hungry = false;
+        b.properties.eaten = true;
+        a.properties.happiness += b.properties.tastiness;
+        if (b.properties.tastiness >= 2) {
+          yield (new seaduck.StoryEvent("reallyLike", a, b));
+        }
+      }
+    },
+    {
+      "name": "befriend",
+      "match": ["#person", "#person"],
+      "when": function(a, b) {
+        return (
+          (!a.properties.hungry && !b.properties.hungry)
+          && !this.isRelated("friendship", a, b));
+      },
+      "action": function*(a, b) {
+        yield (new seaduck.StoryEvent("makeFriends", a, b));
+        this.reciprocal("friendship", a, b);
+      }
+    },
+    {
+      "name": "express happiness",
+      "match": ["#person"],
+      "when": function(a) {
+        return !a.properties.hungry
+          && a.properties.happiness >= 2
+          && this.allRelatedByTag("friendship", a, "#person").length > 0;
+      },
+      "action": function*(a) {
+        yield (new seaduck.StoryEvent("isHappy", a));
       }
     }
   ],
@@ -267,6 +356,21 @@ let n = new seaduck.Narrative({
       "'I'm just about ready to hit the hay,' says #nounA#.",
       "You can tell just by looking at them that #nounA# really needs some rest."
     ],
+    "isHappy": ["#nounA# was happy", "#nounA# felt good!"],
+    "isHungry": [
+      "#nounA# had a rumble in their tummy.",
+      "#nounA# felt very hungry."],
+    "makeFriends": [
+      "#nounA# made friends with #nounB#.",
+      "#nounA# and #nounB# became friends."],
+    "reallyLike": [
+      "And let me tell you, #nounA# really enjoyed that #nounB#.",
+      "#nounA# says, 'This #nounB# is so delicious!'"
+    ],
+    "eat": [
+      "#nounA# ate a #nounB#.",
+      "#nounA# gobbled up a #nounB#."
+    ],
     "_end": [
       "The end."
     ]
@@ -275,7 +379,7 @@ let n = new seaduck.Narrative({
 
 output = "";
 
-let maxSteps = 50000; // maximum number of steps to perform
+let maxSteps = 1000; // maximum number of steps to perform
 
 for (let i = 0; i < maxSteps; i++) {
   let storyEvents = n.stepAndRender();
