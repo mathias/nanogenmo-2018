@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "markovian-nlp": "^3.0.4",
     "seaduck": "https://github.com/aparrish/seaduck"
   }
 }

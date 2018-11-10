@@ -59,3 +59,11 @@ typings/
 
 # next.js build output
 .next
+
+# input files to generator
+inputs
+exex/inputs
+exex/ascii_art
+
+# MacOS
+.DS_Store
