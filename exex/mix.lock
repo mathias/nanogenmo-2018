@@ -1,0 +1,3 @@
+%{
+  "faust": {:hex, :faust, "0.1.0", "a1c5ac7cff183b022f22f20224e39f59af69984551dcee8ec862886a11bf8370", [:mix], []},
+}
