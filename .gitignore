@@ -65,8 +65,8 @@ inputs
 inputs-hold
 exex/inputs
 exex/ascii_art
-foo/inputs
-foo/output
+pos2tracery_experiment/inputs
+pos2tracery_experiment/output
 
 # MacOS
 .DS_Store
