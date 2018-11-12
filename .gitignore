@@ -62,8 +62,11 @@ typings/
 
 # input files to generator
 inputs
+inputs-hold
 exex/inputs
 exex/ascii_art
+foo/inputs
+foo/output
 
 # MacOS
 .DS_Store

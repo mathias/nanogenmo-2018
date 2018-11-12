@@ -372,7 +372,8 @@ let n = new seaduck.Narrative({
       "#nounA# gobbled up a #nounB#."
     ],
     "_end": [
-      "The end."
+      "The end.",
+      "And they lived happily ever after."
     ]
   }
 });

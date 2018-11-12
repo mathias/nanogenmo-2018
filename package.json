@@ -1,6 +1,9 @@
 {
   "dependencies": {
     "markovian-nlp": "^3.0.4",
-    "seaduck": "https://github.com/aparrish/seaduck"
+    "ora": "^3.0.0",
+    "pos2tracery": "^0.2.0",
+    "seaduck": "https://github.com/aparrish/seaduck",
+    "tracery-grammar": "^2.7.3"
   }
 }
