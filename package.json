@@ -2,8 +2,10 @@
   "dependencies": {
     "markovian-nlp": "^3.0.4",
     "ora": "^3.0.0",
+    "perlin-noise": "^0.0.1",
     "pos2tracery": "^0.2.0",
     "seaduck": "https://github.com/aparrish/seaduck",
+    "seedrandom": "^2.4.4",
     "tracery-grammar": "^2.7.3"
   }
 }

@@ -1,6 +1,11 @@
 # @mathias 's NaNoGenMo 2018
 
-References
+
+
+## Dev Diary
+
+
+## References
 
 ## License
 
