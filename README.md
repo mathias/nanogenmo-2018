@@ -4,6 +4,7 @@
 
 ## Dev Diary
 
+In [this issue](https://github.com/NaNoGenMo/2018/issues/59) on the NaNoGenMo 2018 repo.
 
 ## References
 
