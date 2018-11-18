@@ -63,10 +63,10 @@ typings/
 # input files to generator
 inputs
 inputs-hold
-exex/inputs
-exex/ascii_art
-pos2tracery_experiment/inputs
-pos2tracery_experiment/output
+experiments/exex/inputs
+experiments/exex/ascii_art
+experiments/pos2tracery_experiment/inputs
+experiments/pos2tracery_experiment/output
 
 # MacOS
 .DS_Store
