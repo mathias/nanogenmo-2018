@@ -6,6 +6,8 @@ let lang = new Language()
 
 console.log(`This language is named: ${lang.langName}`)
 
+console.log(`The morphemes are: ${lang.morphemes}`)
+
 console.log('Example words:')
 
 let words = []

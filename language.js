@@ -8,6 +8,37 @@ const allStructures = [
 
 const allConsonents = 'bdghjklmnpqrstvwxzŋɣʃʒʔʧ'.split('');
 
+const vowsets = [
+  {
+    name: "Standard 5-vowel",
+    V: "aeiou"
+  },
+  {
+    name: "3-vowel a i u",
+    V: "aiu"
+  },
+  {
+    name: "Extra A E I",
+    V: "aeiouAEI"
+  },
+  {
+    name: "Extra U",
+    V: "aeiouU"
+  },
+  {
+    name: "5-vowel a i u A I",
+    V: "aiuAI"
+  },
+  {
+    name: "3-vowel e o u",
+    V: "eou"
+  },
+  {
+    name: "Extra A O U",
+    V: "aeiouAOU"
+  }
+];
+
 const defaultOrtho = {
   'ʃ': 'sh',
   'ʒ': 'zh',
@@ -126,9 +157,9 @@ class Language {
 
     this.config = _.defaults(opts, {
       structure: _.sample(allStructures).split(''),
-      maxMorphemes: _.random(7,20),
+      maxMorphemes: _.random(7,16),
       C: this.chooseConsonents(),
-      V: 'aeiou'.split(''),
+      V: _.shuffle(vowsets)[0].V,
       S: 's'.split(''),
       F: 'mn'.split(''),
       L: 'rl'.split(''),
@@ -136,7 +167,7 @@ class Language {
       maxsyll: maxsyll,
       cortho: _.shuffle(corthsets)[0].orth,
       vortho: _.shuffle(vorthsets)[0].orth,
-      joiner: _.shuffle('   -'.split(''))[0]
+      joiner: _.shuffle("'   -".split(''))[0]
     })
 
     this.morphemes = this.makeMorphemes()
@@ -177,9 +208,9 @@ class Language {
   }
 
   makeMorphemes() {
-    return _.map(_.range(this.config.maxMorphemes), _.bind(function () {
+    return _.uniq(_.map(_.range(this.config.maxMorphemes), _.bind(function () {
       return this.makeMorpheme();
-    }, this))
+    }, this)))
   }
 
   makeWord() {
@@ -192,20 +223,13 @@ class Language {
 
     w = this.spell(w)
 
-    for (let k in this.words) {
-      if (this.words[k].includes(w)) {
-        break;
-      } else {
-        this.words.push(w);
-      }
-    }
     return w;
   }
 
   spell(w) {
-    var s = '';
-    for (var i = 0; i < w.length; i++) {
-      var c = w[i];
+    let s = '';
+    for (let i = 0; i < w.length; i++) {
+      let c = w[i];
       s += this.config.cortho[c] || this.config.vortho[c] || defaultOrtho[c] || c;
     }
     return s;
