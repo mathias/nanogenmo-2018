@@ -122,7 +122,7 @@ class Language {
   constructor(opts) {
     opts = opts || {}
     let minsyll = _.random(1, 3)
-    let maxsyll = _.random(minsyll+1, 8)
+    let maxsyll = _.random(minsyll+1, 7)
 
     this.config = _.defaults(opts, {
       structure: _.sample(allStructures).split(''),
