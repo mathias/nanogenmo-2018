@@ -159,15 +159,15 @@ class Language {
       structure: _.sample(allStructures).split(''),
       maxMorphemes: _.random(7,16),
       C: this.chooseConsonents(),
-      V: _.shuffle(vowsets)[0].V,
+      V: _.sample(vowsets).V,
       S: 's'.split(''),
       F: 'mn'.split(''),
       L: 'rl'.split(''),
       minsyll: minsyll,
       maxsyll: maxsyll,
-      cortho: _.shuffle(corthsets)[0].orth,
-      vortho: _.shuffle(vorthsets)[0].orth,
-      joiner: _.shuffle("'   -".split(''))[0]
+      cortho: _.sample(corthsets).orth,
+      vortho: _.sample(vorthsets).orth,
+      joiner: _.sample("'   -".split(''))
     })
 
     this.morphemes = this.makeMorphemes()
@@ -202,7 +202,7 @@ class Language {
           continue;
         }
       }
-      syll += _.shuffle(this.config[ptype], 1)[0];
+      syll += _.sample(this.config[ptype])
     }
     return syll
   }
@@ -218,7 +218,7 @@ class Language {
     let w = ''
 
     for (var i = 0; i < nsylls; i++) {
-      w += _.shuffle(this.morphemes)[0]
+      w += _.sample(this.morphemes)
     }
 
     w = this.spell(w)
