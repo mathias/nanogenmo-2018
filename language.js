@@ -198,7 +198,7 @@ class Language {
       if (structure[i+1] == '?') {
         i++;
 
-        if (Math.random() < 0.5) {
+        if (Math.random() <= 0.5) {
           continue;
         }
       }

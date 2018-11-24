@@ -8,6 +8,17 @@ In [this issue](https://github.com/NaNoGenMo/2018/issues/59) on the NaNoGenMo 20
 
 ## References
 
+## Local setup
+
+1. Clone https://github.com/dariusk/corpora to the root dir
+2. Run with seed:
+
+```
+$ node index.js --seed 12345
+```
+
+Book will be generated in book.txt and book.pdf
+
 ## License
 
 Copyright (c) 2018 Matt Gauger

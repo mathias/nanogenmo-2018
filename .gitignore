@@ -68,5 +68,8 @@ experiments/exex/ascii_art
 experiments/pos2tracery_experiment/inputs
 experiments/pos2tracery_experiment/output
 
+# Data used:
+corpora
+
 # MacOS
 .DS_Store
