@@ -1,7 +1,6 @@
 {
   "dependencies": {
     "lodash": "^4.17.11",
-    "markovian-nlp": "^3.0.4",
     "ora": "^3.0.0",
     "perlin-noise": "^0.0.1",
     "pos2tracery": "^0.2.0",
