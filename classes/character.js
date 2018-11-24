@@ -2,7 +2,7 @@ let _ = require('lodash')
 let fs = require('fs')
 
 const descriptions = JSON.parse(fs.readFileSync('corpora/data/humans/descriptions.json', 'utf8'))["descriptions"]
-const names = JSON.parse(fs.readFileSync('./character_names.json', 'utf8'))["names"]
+const names = JSON.parse(fs.readFileSync('./data/character_names.json', 'utf8'))["names"]
 
 const traits = {
   openness: [

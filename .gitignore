@@ -62,13 +62,8 @@ typings/
 
 # input files to generator
 inputs
-inputs-hold
-experiments/exex/inputs
-experiments/exex/ascii_art
-experiments/pos2tracery_experiment/inputs
-experiments/pos2tracery_experiment/output
 
-# Data used:
+# Open source data used:
 corpora
 
 # MacOS
