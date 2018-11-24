@@ -23,5 +23,9 @@ _.range(5).map(function() {
   console.log(lang.makeName())
 })
 
+console.log('Example location names:')
+_.range(5).map(function() {
+  console.log(lang.makePlaceName())
+})
 
 console.log(new Character())

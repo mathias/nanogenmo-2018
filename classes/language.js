@@ -213,8 +213,8 @@ class Language {
     }, this)))
   }
 
-  makeWord() {
-    let nsylls = _.random(this.config.minsyll, this.config.maxsyll);
+  makeWord(maxsyll) {
+    let nsylls = _.random(this.config.minsyll, maxsyll || this.config.maxsyll);
     let w = ''
 
     for (var i = 0; i < nsylls; i++) {
@@ -242,9 +242,10 @@ class Language {
   makeName() {
     let name = ''
 
-    var w1 = this.capitalize(this.makeWord())
-    var w2 = this.capitalize(this.makeWord())
+    let w1 = this.capitalize(this.makeWord())
+    let w2 = this.capitalize(this.makeWord())
     if (w1 == w2) return w1;
+
     if (Math.random() > 0.5) {
       name = ([w1, w2]).join(this.config.joiner);
     } else {
@@ -254,6 +255,18 @@ class Language {
       name = [this.definites['the'], name].join(this.config.joiner);
     }
     return name
+  }
+
+  makePlaceName() {
+    let name = this.capitalize(this.makeWord(3))
+
+    const directions = ['North', 'South', 'East', 'West', 'Upper']
+    const suffixers = ['the Lesser', 'the Greater', `upon ${this.makeName(3)}`]
+
+    if (Math.random() > 0.5) { name = `${_.sample(directions)} ${name}` }
+    if (Math.random() > 0.75) { name = name + ' ' + _.sample(suffixers) }
+
+    return name;
   }
 }
 
