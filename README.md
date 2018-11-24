@@ -11,10 +11,10 @@ In [this issue](https://github.com/NaNoGenMo/2018/issues/59) on the NaNoGenMo 20
 ## Local setup
 
 1. Clone https://github.com/dariusk/corpora to the root dir
-2. Run with seed:
+2. Run ~with seed~: (TODO: seeding with particular seed)
 
 ```
-$ node index.js --seed 12345
+$ node index.js
 ```
 
 Book will be generated in book.txt and book.pdf
