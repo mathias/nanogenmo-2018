@@ -1,7 +1,8 @@
-const Artifact = require('./classes/artifact');
-const Character = require('./classes/character');
-const Language = require('./classes/language');
-const _ = require('lodash');
+const Artifact = require('./classes/artifact')
+const Character = require('./classes/character')
+const Language = require('./classes/language')
+const _ = require('lodash')
+const seaduck = require('seaduck')
 
 // The new plan:
 // 1. Generate regions, one per chapter. (How many chapters? 16 might work)
@@ -17,9 +18,7 @@ const _ = require('lodash');
 // 10. Generate the final chapter
 // 11. Draw PDF
 
-let story = ''
-
-let regions = Array(16);
+let chapters = []
 
 let entities = []
 
@@ -37,12 +36,8 @@ entities.push(new Character({
 // At state: initial entities + world
 //console.log(entities);
 
-// Plot space (possibilities)
-// Pick discourse: What is necessary to reach plot points?
-// Figure out the simulation in service of that
-
 // Introduction
-story += ''
+chapters.push({title: 'Introduction', text: 'Once upon a time'})
 
 // In each region:
 // 1. Introduce how the characters got there.
@@ -57,7 +52,10 @@ story += ''
 
 
 // Ending
-story += ''
+chapters.push({title: '', text: 'THE END'})
 
 // Output (TODO: PDF generation rendering here)
-console.log(story)
+chapters.map(function(chapter) {
+  console.log(chapter.title + '\n')
+  console.log(chapter.text + '\n\n')
+})
