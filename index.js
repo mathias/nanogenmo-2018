@@ -25,7 +25,7 @@ entities.push(new Character({age: _.random(4,6), additional: ['child']}));
 entities.push(new Character({age: _.random(7,10), additional: ['child']}));
 entities.push(new Character({age: _.random(11,13), additional: ['child']}));
 
-let wizardNames = ['Hilde', 'Noirin', 'Barflax']
+let wizardNames = ['Hilde', 'Noirin', 'Butterflax', 'Anise', 'Matilda']
 entities.push(new Character({
   age: _.random(100,399),
   name: _.sample(wizardNames),
