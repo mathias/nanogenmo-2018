@@ -17,6 +17,8 @@ const _ = require('lodash');
 // 10. Generate the final chapter
 // 11. Draw PDF
 
+let story = ''
+
 let regions = Array(16);
 
 let entities = []
@@ -32,4 +34,30 @@ entities.push(new Character({
   profession: 'Wizard'
 }));
 
-console.log(entities);
+// At state: initial entities + world
+//console.log(entities);
+
+// Plot space (possibilities)
+// Pick discourse: What is necessary to reach plot points?
+// Figure out the simulation in service of that
+
+// Introduction
+story += ''
+
+// In each region:
+// 1. Introduce how the characters got there.
+// 2. Revisit the character's current state, if anything out of the ordinary. (Is anyone injured? Is anyone sick?)
+// 3. Describe the region initially
+// 4. Introduce the challenge
+// 4.5 Characters discuss the challenge
+// 5. Search space for actions that lead to a narrative that solves the challenge
+// 6. Describe solving the challenge
+// 7. Have locals reward/thank characters
+// 8. Describe how characters move on to next region
+
+
+// Ending
+story += ''
+
+// Output (TODO: PDF generation rendering here)
+console.log(story)

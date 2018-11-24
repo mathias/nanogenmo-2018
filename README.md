@@ -1,12 +1,10 @@
 # @mathias 's NaNoGenMo 2018
 
-
+Roughly: The idea this year is to generate a "journey" novel in the spirit of The Wizard of Oz or The Hobbit, with some absurd elements inspired by Alice in Wonderland and other novels meant more for kids than adults.
 
 ## Dev Diary
 
 In [this issue](https://github.com/NaNoGenMo/2018/issues/59) on the NaNoGenMo 2018 repo.
-
-## References
 
 ## Local setup
 
@@ -18,6 +16,14 @@ $ node index.js
 ```
 
 Book will be generated in book.txt and book.pdf
+
+## References
+
+Inspiration:
+* [The Deserts of the West](https://github.com/dariusk/NaNoGenMo-2015/issues/156) from NaNoGenMo 2015.
+  * Related: [language generator article](https://mewo2.com/notes/naming-language/) for above, and the [javascript source for it](https://github.com/mewo2/naming-language/blob/master/language.js).
+* [Procedurally generating personalities](https://www.gamasutra.com/blogs/TanyaXShort/20161216/310387/Procedurally_Generating_Personalities.php)
+* At some point I was inspired to try procedurally-generating symbols by [https://github.com/fatiherikli/kilim-motifs](https://github.com/fatiherikli/kilim-motifs).
 
 ## License
 
