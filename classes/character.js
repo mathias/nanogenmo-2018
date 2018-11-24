@@ -86,20 +86,23 @@ const traits = {
 class Character {
   constructor(opts) {
     return _.defaults(opts, {
-      type: 'character',
-      inventory: [],
       name: _.sample(names),
-      languages: {
-        spoken: [],
-        understood: [],
-        read: []
-      },
-      age: 0,
-      traits: _.reduce(traits, function(result, val, key) {
-        result[key] = _.sample(val);
-        return result;
-      }, {}),
-      adjectives: _.sample(descriptions)
+      tags: ['character'],
+      properties: {
+        inventory: [],
+        languages: {
+          spoken: [],
+          understood: [],
+          read: []
+        },
+        age: 0,
+        traits: _.reduce(traits, function(result, val, key) {
+          //result[key] = _.sample(val);
+          result.push(_.sample(val))
+          return result;
+        }, []),
+        adjectives: _.sample(descriptions)
+      }
     })
   }
 }

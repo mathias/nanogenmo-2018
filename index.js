@@ -1,8 +1,19 @@
 const Artifact = require('./classes/artifact')
 const Character = require('./classes/character')
 const Language = require('./classes/language')
+
 const _ = require('lodash')
 const seaduck = require('seaduck')
+const tracery = require('tracery-grammar')
+const fs = require('fs')
+
+const grammarJson = JSON.parse(fs.readFileSync('./grammar.json', 'utf8'))
+let gibberishGrammar = tracery.createGrammar(grammarJson)
+gibberishGrammar.addModifiers(tracery.baseEngModifiers);
+
+function getGibberish() {
+  return gibberishGrammar.flatten('#origin#')
+}
 
 // The new plan:
 // 1. Generate regions, one per chapter. (How many chapters? 16 might work)
@@ -22,18 +33,46 @@ let chapters = []
 
 let entities = []
 
-entities.push(new Character({age: _.random(4,6), additional: ['child']}));
-entities.push(new Character({age: _.random(7,10), additional: ['child']}));
-entities.push(new Character({age: _.random(11,13), additional: ['child']}));
+entities.push(new Character({tags: ['character', 'child'], properties: {age: _.random(4,6)}}));
+entities.push(new Character({tags: ['character', 'child'], properties: {age: _.random(7,10)}}));
+entities.push(new Character({tags: ['character', 'child'], properties: {age: _.random(11,13)}}));
 
 let wizardNames = ['Hilde', 'Noirin', 'Butterflax', 'Anise', 'Matilda']
 entities.push(new Character({
-  age: _.random(100,399),
   name: _.sample(wizardNames),
-  profession: 'Wizard'
+  tags: ['character', 'wizard'],
+  properties: {
+    age: _.random(100,399),
+    profession: 'Wizard'
+  }
 }));
 
-// At state: initial entities + world
+let squirrelLang = new Language({
+  minsyll: 1,
+  maxsyll: 2,
+  V: "aeiou",
+  vortho: {},
+  cortho: {}
+});
+
+let squirrel = new Character({
+  name: squirrelLang.makeName(),
+  tags: ['character'],
+  properties: {
+    race: 'squirrel person',
+    age: _.random(1,10),
+    languages: {
+      spoken: [squirrelLang.langName],
+      understood: [squirrelLang.langName],
+      read: [squirrelLang.langName]
+    }
+  }
+})
+//console.log(squirrel);
+//console.log(squirrel.properties.languages);
+entities.push(squirrel)
+
+// initial entities + world state
 //console.log(entities);
 
 // Introduction
@@ -50,9 +89,98 @@ chapters.push({title: 'Introduction', text: 'Once upon a time'})
 // 7. Have locals reward/thank characters
 // 8. Describe how characters move on to next region
 
+let n = new seaduck.Narrative({
+  "nouns": entities.concat([
+    {
+      tags: ['region'],
+      name: 'house of the wizard'
+    }
+  ]),
+  "actions": [
+    {
+      "match": ["#character"],
+      "when": function(a) {
+        return a.properties.traits && a.properties.traits.includes('amiable')
+      },
+      "action": function*(a) {
+        yield new seaduck.StoryEvent("amiable", a);
+      }
+    },
+    {
+      "match": ["#character"],
+      "when": function(a) {
+        return a.properties.age > 0
+      },
+      "action": function*(a) {
+        yield new seaduck.StoryEvent("isAlive", a);
+      }
+    },
+    {
+      "match": ["#character"],
+      "when": function(a) {
+        return a.properties.sleepiness == 7;
+      },
+      "action": function*(a) {
+        yield new seaduck.StoryEvent("reallySleepy", a);
+      }
+    },
+    {
+      "match": ["#character", "#thing"],
+      "when": function(a, b) {
+        return a.properties.sleepiness >= 10 
+          && !this.isRelated("sleepingIn", a, b)
+          && !b.properties.occupied;
+      },
+      "action": function*(a, b) {
+        this.relate("sleepingIn", a, b);
+        b.properties.occupied = true;
+        yield new seaduck.StoryEvent("getsInto", a, b);
+      }
+    },
+    {
+      "match": ["Chris", "king-size bed"],
+      "when": function(a, b) {
+        return this.isRelated("sleepingIn", a, b);
+      },
+      "action": function*(a, b) {
+        yield new seaduck.StoryEvent("asleep", a, b);
+      }
+    }
+  ],
+  "initialize": function*() {
+    yield new seaduck.StoryEvent('describe', this.noun('house of the wizard'));
+  },
+  "traceryDiscourse": {
+    "amiable": ["#nounA# is a friendly sort of person.", "#nounA# is often good-natured."],
+    "isAlive": ["#nounA# is alive."],
+    "describe": ["The #nounA# is where everyone is."],
+    "_end": ["That's all."]
+  }
+})
+
+let strs = []
+let step = 0;
+let stepsDesired = 25;
+
+//for (let i = 0; i < maxSteps; i++) {
+while (step < stepsDesired) {
+  let storyEvents = n.stepAndRender();
+  if (storyEvents.length > 0) {
+    step++;
+
+    for (let ev of storyEvents) {
+      strs.push(ev)
+    }
+  } else {
+    break;
+  }
+}
+str = _.uniq(strs).join('\n')
+
+chapters.push({title: 'Chapter #!', text: str})
 
 // Ending
-chapters.push({title: '', text: 'THE END'})
+chapters.push({title: '', text: `Then the squirrel person ${squirrel.name} said: '${getGibberish()}' and it was over.\n\nTHE END`})
 
 // Output (TODO: PDF generation rendering here)
 chapters.map(function(chapter) {

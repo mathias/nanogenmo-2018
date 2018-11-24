@@ -6,7 +6,40 @@ const allStructures = [
   "VC", "CVL?C?", "C?VL?C", "C?VLC?"
 ]
 
-const allConsonents = 'bdghjklmnpqrstvwxzŋɣʃʒʔʧ'.split('');
+const consets = [
+  {
+    name: "Minimal",
+    C: "ptkmnls"
+  },
+  {
+    name: "English-ish",
+    C: "ptkbdgmnlrsʃzʒʧ"
+  },
+  {
+    name: "Pirahã (very simple)",
+    C: "ptkmnh"
+  },
+  {
+    name: "Hawaiian-ish",
+    C: "hklmnpwʔ"
+  },
+  {
+    name: "Greenlandic-ish",
+    C: "ptkqvsgrmnŋlj"
+  },
+  {
+    name: "Arabic-ish",
+    C: "tksʃdbqɣxmnlrwj"
+  },
+  {
+    name: "Arabic-lite",
+    C: "tkdgmnsʃ"
+  },
+  {
+    name: "English-lite",
+    C: "ptkbdgmnszʒʧhjw"
+  }
+];
 
 const vowsets = [
   {
@@ -104,10 +137,6 @@ const corthsets = [
 
 const vorthsets = [
   {
-    name: "Ácutes",
-    orth: {}
-  },
-  {
     name: "Ümlauts",
     orth: {
       A: "ä",
@@ -158,7 +187,7 @@ class Language {
     this.config = _.defaults(opts, {
       structure: _.sample(allStructures).split(''),
       maxMorphemes: _.random(7,16),
-      C: this.chooseConsonents(),
+      C: _.sample(consets).C,
       V: _.sample(vowsets).V,
       S: 's'.split(''),
       F: 'mn'.split(''),
