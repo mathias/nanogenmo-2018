@@ -1,23 +1,23 @@
 const _ = require('lodash')
+const fs = require('fs')
 const seaduck = require('seaduck')
 const tracery = require('tracery-grammar')
-const fs = require('fs')
 
 const Artifact = require('./classes/artifact')
 const Character = require('./classes/character')
 const Language = require('./classes/language')
 
 // Data files:
-const lastNames = JSON.parse(fs.readFileSync('corpora/data/humans/lastNames.json', 'utf8'))["lastNames"]
 const adjs = JSON.parse(fs.readFileSync('corpora/data/words/adjs.json', 'utf8'))["adjs"]
 const bodyParts = JSON.parse(fs.readFileSync('corpora/data/humans/bodyParts.json', 'utf8'))["bodyParts"]
+const lastNames = JSON.parse(fs.readFileSync('corpora/data/humans/lastNames.json', 'utf8'))["lastNames"]
 
 const grammarJson = JSON.parse(fs.readFileSync('./grammar.json', 'utf8'))
 let gibberishGrammar = tracery.createGrammar(grammarJson)
 gibberishGrammar.addModifiers(tracery.baseEngModifiers);
 
 function getGibberish() {
-  return gibberishGrammar.flatten('#origin#')
+  return gibberishGrammar.flatten('#origin#').replace(/"+/gi, '').replace(/[ ]+/, ' ')
 }
 
 // The new plan:
@@ -121,7 +121,7 @@ introText += `The ${childrenLastName} children were all asleep in their beds. As
 
 introText += `Sneaking in behind ${wizardName} was a peculiar sight. A small woodland creature, in a ${adj()} jumpsuit. It turned, revealing that it was carrying a small backpack with various leaves sticking out of it. Its tiny eyes darted nervously around the room.\n\n`
 
-let sayWords = getGibberish().replace(/"+/gi, '').replace(/[ ]+/, ' ')
+let sayWords = getGibberish()
 introText += `"${sayWords}", it chirped.\n\n`
 
 introText +=`"That may well be, ${squirrelName}", said ${wizardName}. "But I am sure this is the right place!"\n\n`
