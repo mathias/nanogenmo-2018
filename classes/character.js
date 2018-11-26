@@ -4,89 +4,11 @@ let fs = require('fs')
 const descriptions = JSON.parse(fs.readFileSync('corpora/data/humans/descriptions.json', 'utf8'))["descriptions"]
 const names = JSON.parse(fs.readFileSync('./data/character_names.json', 'utf8'))["names"]
 
-const traits = {
-  openness: [
-    'imaginative',
-    'insightful',
-    'many interests',
-    'original',
-    'daring',
-    'preference for variety',
-    'clever',
-    'creative',
-    'curious',
-    'perceptive',
-    'intellectual',
-    'complex/deep'
-  ],
-  conscientiousness: [
-    'persistent',
-    'ambitious',
-    'thorough',
-    'self-disciplined',
-    'consistent',
-    'predictable',
-    'controlled',
-    'reliable',
-    'resourceful',
-    'hard working',
-    'energetic',
-    'persevering',
-    'planner'
-  ],
-  extroversion: [
-    'sociable',
-    'assertive',
-    'merry',
-    'outgoing',
-    'energetic',
-    'talkative',
-    'articulate',
-    'fun-loving',
-    'affectionate',
-    'friendly'
-  ],
-  agreeableness: [
-    'altruistic',
-    'trusting',
-    'modest',
-    'humble',
-    'patient',
-    'moderate',
-    'tactful',
-    'polite',
-    'kind',
-    'loyal',
-    'unselfish',
-    'helpful',
-    'sensitive',
-    'amiable',
-    'cheerful',
-    'considerate',
-  ],
-  neuroticism: [
-    'awkward',
-    'pessimistic',
-    'moody',
-    'jealous',
-    'testy',
-    'fearful',
-    'nervous',
-    'anxious',
-    'timid',
-    'wary',
-    'self-critical',
-    'unconfident',
-    'insecure',
-    'unstable',
-    'oversensitive',
-  ]
-}
-
 class Character {
   constructor(opts) {
+    let name = this.pickName(opts.nameNot || [])
     return _.defaults(opts, {
-      name: _.sample(names),
+      name: name,
       tags: ['character'],
       properties: {
         inventory: [],
@@ -96,14 +18,21 @@ class Character {
           read: []
         },
         age: 0,
-        traits: _.reduce(traits, function(result, val, key) {
-          //result[key] = _.sample(val);
-          result.push(_.sample(val))
-          return result;
-        }, []),
-        adjectives: _.sample(descriptions)
+        adjectives: _.sample(descriptions),
+        height: _.sample(['short for their age', 'tall for their age', 'of average height']),
+        hair_length: _.sample(['long', 'shoulder length', 'short', 'close cropped']),
+        hair_colour: _.sample(['blonde', 'brown', 'red', 'auburn', 'black', 'blue', 'purple', 'pink', 'white']),
+        eye_color: _.sample(['brown', 'blue', 'grey', 'green', 'hazel', 'red', 'aquamarine']),
       }
     })
+  }
+
+  pickName(nameNot) {
+    let name = _.sample(names)
+    while(nameNot.includes(name)) {
+      name = _.sample(names)
+    }
+    return name
   }
 }
 

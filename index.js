@@ -43,9 +43,9 @@ let worldLanguage = new Language({
 });
 worldLanguage.langName = `Ancient ${worldLanguage.langName}`
 
-const bookTitle = `The Placeholder of ${worldLanguage.makeName()}`
+const bookTitle = `The Road to ${worldLanguage.makeName()}`
 console.log(bookTitle);
-console.log(`A history written in ${worldLanguage.langName}.\n`);
+//console.log(`A history written in ${worldLanguage.langName}.\n`);
 
 let chapters = []
 
@@ -62,14 +62,17 @@ entities.push(new Character({
 }));
 
 entities.push(new Character({
+  nameNot: [entities[0].name],
   tags: ['character', 'child'],
   properties: {age: _.random(7,10), lastName: childrenLastName}
 }));
 
 entities.push(new Character({
+  nameNot: [entities[0].name, entities[1].name],
   tags: ['character', 'child'],
   properties: {age: _.random(11,13), lastName: childrenLastName}
 }));
+
 
 let wizardNames = ['Hilde', 'Noirin', 'Butterflax', 'Anise', 'Matilda']
 entities.push(new Character({
@@ -126,7 +129,7 @@ introText += `"${sayWords}", it chirped.\n\n`
 
 introText +=`"That may well be, ${squirrelName}", said ${wizardName}. "But I am sure this is the right place!"\n\n`
 
-introText += `${wizardName} snapped their fingers, and the ${childrenLastName} disappeared out of their beds. Turning, ${wizardName} and ${squirrelName} disappeared back through the hole in time and space. A needle and thread appeared, sewing up the gateway, which faded until it disappeared completely.`
+introText += `${wizardName} snapped their fingers, and the ${childrenLastName}s disappeared out of their beds. Turning, ${wizardName} and ${squirrelName} disappeared back through the hole in time and space. A needle and thread appeared, sewing up the gateway, which faded until it disappeared completely.`
 
 chapters.push({title: 'Introduction', text: introText})
 
@@ -141,80 +144,77 @@ chapters.push({title: 'Introduction', text: introText})
 // 7. Have locals reward/thank characters
 // 8. Describe how characters move on to next region
 
-let n = new seaduck.Narrative({
-  "nouns": entities.concat([
-    {
-      tags: ['region'],
-      name: 'house of the wizard'
-    }
-  ]),
-  "actions": [
-    {
-      "match": ["#character"],
-      "when": function(a) {
-        return a.properties.traits && a.properties.traits.includes('amiable')
-      },
-      "action": function*(a) {
-        yield new seaduck.StoryEvent("amiable", a);
-      }
-    },
-    {
-      "match": ["#character"],
-      "when": function(a) {
-        return a.properties.age > 0
-      },
-      "action": function*(a) {
-        yield new seaduck.StoryEvent("isAlive", a);
-      }
-    },
-    {
-      "match": ["#character"],
-      "when": function(a) {
-        return a.properties.race
-      },
-      "action": function*(a) {
-        yield new seaduck.StoryEvent("describeRace", a);
-      }
-    },
-  ],
-  "initialize": function*() {
-    yield new seaduck.StoryEvent('describeRoom', this.noun('house of the wizard'));
-    //yield new seaduck.StoryEvent('describePerson', this.noun(entities[0].name));
-    //yield new seaduck.StoryEvent('describePerson', this.noun(entities[1].name));
-    //yield new seaduck.StoryEvent('describePerson', this.noun(entities[2].name));
-  },
-  "traceryDiscourse": {
-    "amiable": ["#nounA# is a friendly sort of person.", "#nounA# is often good-natured."],
-    "isAlive": ["#nounA# is alive."],
-    "describeRace": ["#nounA# is a #nounA_race#."],
-    "smell1": ["cheeze", "old socks", "baloney"],
-    "smell2": ["lilac", "earth", "wood"],
-    "describeRoom": ["The #nounA# is where everyone is. It smells like #smell1# and #smell2# at once."],
-    "describePerson": ["#nounA# is #nounA_age# years old."],
-    "_end": ["That's all."]
-  }
-})
+//let n = new seaduck.Narrative({
+  //"nouns": entities.concat([
+    //{
+      //tags: ['region'],
+      //name: 'house of the wizard'
+    //}
+  //]),
+  //"actions": [
+    //{
+      //"match": ["#character"],
+      //"when": function(a) {
+        //return a.properties.traits && a.properties.traits.includes('amiable')
+      //},
+      //"action": function*(a) {
+        //yield new seaduck.StoryEvent("amiable", a);
+      //}
+    //},
+    //{
+      //"match": ["#child"],
+      //"when": function(a) {
+        //return a.properties.age && a.properties.age > 0
+      //},
+      //"action": function*(a) {
+        //a.properties.years_old = a.properties.age
+        //yield new seaduck.StoryEvent("characterIntro", a);
+      //}
+    //},
+    //{
+      //"match": ["#character"],
+      //"when": function(a) {
+        //return a.properties.race
+      //},
+      //"action": function*(a) {
+        //yield new seaduck.StoryEvent("describeRace", a);
+      //}
+    //},
+  //],
+  //"initialize": function*() {
+    //yield new seaduck.StoryEvent('describeRoom', this.noun('house of the wizard'));
+  //},
+  //"traceryDiscourse": {
+    //"amiable": ["#nounA# is a friendly sort of person.", "#nounA# is often good-natured."],
+    //"characterIntro": ["#nounA# is #nounA_years_old#."],
+    //"describeRace": ["#nounA# is a #nounA_race#."],
+    //"describeRoom": ["The #nounA# is where everyone is. It smells like #smell1# and #smell2# at the same time."],
+    //"smell1": ["cheese", "old socks", "baloney"],
+    //"smell2": ["lilac", "earth", "wood"],
+    //"_end": []
+  //}
+//})
 
-let strs = []
-let step = 0;
-let stepsDesired = 25;
+//let strs = []
+//let step = 0;
+//let stepsDesired = 25;
 
-while (step < stepsDesired) {
-  let storyEvents = n.stepAndRender();
-  if (storyEvents.length > 0) {
-    step++;
+//while (step < stepsDesired) {
+  //let storyEvents = n.stepAndRender();
+  //if (storyEvents.length > 0) {
+    //step++;
 
-    for (let ev of storyEvents) {
-      strs.push(ev)
-    }
-  } else {
-    break;
-  }
-}
-str = _.uniq(strs).join('\n')
+    //for (let ev of storyEvents) {
+      //strs.push(ev)
+    //}
+  //} else {
+    //break;
+  //}
+//}
+//str = _.uniq(strs).join('\n')
 
-let chapterNum = 1
-chapters.push({title: `Chapter ${chapterNum}.`, text: str})
+//let chapterNum = 1
+//chapters.push({title: `Chapter ${chapterNum}.`, text: str})
 
 // Ending
 chapters.push({title: '', text: `Then the squirrel person ${squirrel.name} said: '${getGibberish()}' and it was over.\n\nTHE END`})
