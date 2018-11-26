@@ -6,7 +6,7 @@ const names = JSON.parse(fs.readFileSync('./data/character_names.json', 'utf8'))
 
 class Character {
   constructor(opts) {
-    let name = this.pickName(opts.nameNot || [])
+    let name = this.pickName(opts.takenNames || [])
     return _.defaults(opts, {
       name: name,
       tags: ['character'],
@@ -23,13 +23,14 @@ class Character {
         hair_length: _.sample(['long', 'shoulder length', 'short', 'close cropped']),
         hair_colour: _.sample(['blonde', 'brown', 'red', 'auburn', 'black', 'blue', 'purple', 'pink', 'white']),
         eye_color: _.sample(['brown', 'blue', 'grey', 'green', 'hazel', 'red', 'aquamarine']),
+        topic: ''
       }
     })
   }
 
-  pickName(nameNot) {
+  pickName(takenNames) {
     let name = _.sample(names)
-    while(nameNot.includes(name)) {
+    while(takenNames.includes(name)) {
       name = _.sample(names)
     }
     return name

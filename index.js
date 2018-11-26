@@ -45,7 +45,6 @@ worldLanguage.langName = `Ancient ${worldLanguage.langName}`
 
 const bookTitle = `The Road to ${worldLanguage.makeName()}`
 console.log(bookTitle);
-//console.log(`A history written in ${worldLanguage.langName}.\n`);
 
 let chapters = []
 
@@ -62,13 +61,13 @@ entities.push(new Character({
 }));
 
 entities.push(new Character({
-  nameNot: [entities[0].name],
+  takenNames: [entities[0].name],
   tags: ['character', 'child'],
   properties: {age: _.random(7,10), lastName: childrenLastName}
 }));
 
 entities.push(new Character({
-  nameNot: [entities[0].name, entities[1].name],
+  takenNames: [entities[0].name, entities[1].name],
   tags: ['character', 'child'],
   properties: {age: _.random(11,13), lastName: childrenLastName}
 }));
@@ -83,14 +82,6 @@ entities.push(new Character({
     profession: 'Wizard'
   }
 }));
-
-//let squirrelLang = new Language({
-  //minsyll: 1,
-  //maxsyll: 2,
-  //V: "aeiou",
-  //vortho: {},
-  //cortho: {}
-//});
 
 let squirrel = new Character({
   name: worldLanguage.makeName(),
@@ -108,7 +99,7 @@ let squirrel = new Character({
 entities.push(squirrel)
 
 // initial entities + world state
-//console.log(entities);
+console.log(entities);
 
 // Introduction
 let introText = ''
@@ -120,16 +111,8 @@ function adj() {
   return _.sample(adjs);
 }
 
-introText += `The ${childrenLastName} children were all asleep in their beds. As you may already know, sleep is when the world of imagination is closest to our world. That is why, at this moment, a ${adj()} ${_.sample(bodyParts)} appeared in the middle of the room. There was a ripping sound, like a pair of trousers being split, and then the owner of that body part stepped fully through the background. It was, of course, ${wizardName}. But you will meet them later. The hole they left behind seemed to be in the wall itself, as if they'd stepped in from the next room. But the room behind the hole was ${adj()} and ${adj()}, completely unlike the children's bedroom.\n\n`
-
-introText += `Sneaking in behind ${wizardName} was a peculiar sight. A small woodland creature, in a ${adj()} jumpsuit. It turned, revealing that it was carrying a small backpack with various leaves sticking out of it. Its tiny eyes darted nervously around the room.\n\n`
-
 let sayWords = getGibberish()
-introText += `"${sayWords}", it chirped.\n\n`
-
-introText +=`"That may well be, ${squirrelName}", said ${wizardName}. "But I am sure this is the right place!"\n\n`
-
-introText += `${wizardName} snapped their fingers, and the ${childrenLastName}s disappeared out of their beds. Turning, ${wizardName} and ${squirrelName} disappeared back through the hole in time and space. A needle and thread appeared, sewing up the gateway, which faded until it disappeared completely.`
+introText += `"${sayWords}", ${squirrelName} chirped.\n\n`
 
 chapters.push({title: 'Introduction', text: introText})
 
@@ -144,83 +127,22 @@ chapters.push({title: 'Introduction', text: introText})
 // 7. Have locals reward/thank characters
 // 8. Describe how characters move on to next region
 
-//let n = new seaduck.Narrative({
-  //"nouns": entities.concat([
-    //{
-      //tags: ['region'],
-      //name: 'house of the wizard'
-    //}
-  //]),
-  //"actions": [
-    //{
-      //"match": ["#character"],
-      //"when": function(a) {
-        //return a.properties.traits && a.properties.traits.includes('amiable')
-      //},
-      //"action": function*(a) {
-        //yield new seaduck.StoryEvent("amiable", a);
-      //}
-    //},
-    //{
-      //"match": ["#child"],
-      //"when": function(a) {
-        //return a.properties.age && a.properties.age > 0
-      //},
-      //"action": function*(a) {
-        //a.properties.years_old = a.properties.age
-        //yield new seaduck.StoryEvent("characterIntro", a);
-      //}
-    //},
-    //{
-      //"match": ["#character"],
-      //"when": function(a) {
-        //return a.properties.race
-      //},
-      //"action": function*(a) {
-        //yield new seaduck.StoryEvent("describeRace", a);
-      //}
-    //},
-  //],
-  //"initialize": function*() {
-    //yield new seaduck.StoryEvent('describeRoom', this.noun('house of the wizard'));
-  //},
-  //"traceryDiscourse": {
-    //"amiable": ["#nounA# is a friendly sort of person.", "#nounA# is often good-natured."],
-    //"characterIntro": ["#nounA# is #nounA_years_old#."],
-    //"describeRace": ["#nounA# is a #nounA_race#."],
-    //"describeRoom": ["The #nounA# is where everyone is. It smells like #smell1# and #smell2# at the same time."],
-    //"smell1": ["cheese", "old socks", "baloney"],
-    //"smell2": ["lilac", "earth", "wood"],
-    //"_end": []
-  //}
-//})
-
-//let strs = []
-//let step = 0;
-//let stepsDesired = 25;
-
-//while (step < stepsDesired) {
-  //let storyEvents = n.stepAndRender();
-  //if (storyEvents.length > 0) {
-    //step++;
-
-    //for (let ev of storyEvents) {
-      //strs.push(ev)
-    //}
-  //} else {
-    //break;
-  //}
-//}
-//str = _.uniq(strs).join('\n')
-
-//let chapterNum = 1
-//chapters.push({title: `Chapter ${chapterNum}.`, text: str})
+let str= ''
+let chapterNum = 1
+chapters.push({title: `Chapter ${chapterNum}.`, text: str})
 
 // Ending
-chapters.push({title: '', text: `Then the squirrel person ${squirrel.name} said: '${getGibberish()}' and it was over.\n\nTHE END`})
+chapters.push({title: '', text: 'THE END'})
 
 // Output (TODO: PDF generation rendering here)
 chapters.map(function(chapter) {
   console.log(chapter.title + '\n')
   console.log(chapter.text + '\n\n')
 })
+
+// TODO: instead of templating in Tracery/Seaduck, do string templates w/ local
+// names using closures? Like this:
+let foo = (function(squirrelNomer, wizardNomer) {
+  return `${squirrelNomer} and ${wizardNomer}`
+})(squirrelName, wizardName)
+console.log(foo)
