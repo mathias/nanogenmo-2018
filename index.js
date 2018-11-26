@@ -25,7 +25,6 @@ function randAdj() {
   return _.sample(adjs);
 }
 
-
 // The new plan:
 // 1. Generate regions, one per chapter. (How many chapters? 16 might work)
 // 2. Generate peoples for the regions -- "animal peoples" needs generator
@@ -144,7 +143,73 @@ chapters.map(function(chapter) {
 
 // TODO: instead of templating in Tracery/Seaduck, do string templates w/ local
 // names using closures? Like this:
-let foo = (function(squirrelNomer, wizardNomer) {
-  return `${squirrelNomer} and ${wizardNomer}`
-})(squirrelName, wizardName)
-console.log(foo)
+//let foo = (function(squirrelNomer, wizardNomer) {
+  //return `${squirrelNomer} and ${wizardNomer}`
+//})(squirrelName, wizardName)
+//console.log(foo)
+
+let regionTypes = [
+  'swamp',
+  'forest',
+  'field',
+  'meadow',
+  'beach',
+  'ruins',
+  'small village',
+  'rope bridge',
+  'steppes',
+  'cave',
+  'wasteland',
+  'desert',
+  'abandoned stadium',
+  'river',
+  'glacier',
+  'mountaintop',
+  'mines',
+  'abandoned factory',
+  'abandoned schoolhouse',
+  'empty road',
+  'ruined monolith'
+]
+
+let conflictTypes = [
+  'fetchMagicObject',
+  'findLostDog',
+  'towersOfHanoi',
+  'saveCompanionFromEnemies',
+  'freeCompanionFromTrap',
+  'scaredByHarmless',
+  'impassableObstacle',
+  'escapeEnchantment',
+  'meetNewAllies',
+  'passGatekeeper',
+  'solveARiddle',
+  'fightAnEnemy',
+]
+
+class Region {
+  constructor(opts) {
+    return _.defaults(opts, {
+      type: _.sample(regionTypes),
+      name: '',
+      quest: _.sample(conflictTypes),
+    })
+  }
+}
+
+let regions = _.shuffle(regionTypes).slice(0,16).map(function(type) { return new Region({type: type}) })
+
+let village = new Region({type: 'village', name: `the village of the Squirrel People`, quest: 'findSquirrelThing'})
+regions = _.concat(village, regions)
+
+let villainHideout = new Region({type: 'evil castle', name: `the Castle of the Villain`, quest: 'theFinale'})
+regions = _.concat(regions, villainHideout)
+
+//console.log(regions)
+
+// Character proceed through regions in above random order
+console.log(regions.map(function(region) {
+  let modeTransport = _.sample(['walk', 'fly', 'sail', 'run', 'skip', 'crawl', 'teleport'])
+  let s = region.name || region.type
+  return `They ${modeTransport} through ${s}, overcome ${region.quest} and continue on.\n`
+}))
