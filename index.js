@@ -16,9 +16,15 @@ const grammarJson = JSON.parse(fs.readFileSync('./grammar.json', 'utf8'))
 let gibberishGrammar = tracery.createGrammar(grammarJson)
 gibberishGrammar.addModifiers(tracery.baseEngModifiers);
 
+// Util functions:
 function getGibberish() {
   return gibberishGrammar.flatten('#origin#').replace(/"+/gi, '').replace(/[ ]+/, ' ')
 }
+
+function randAdj() {
+  return _.sample(adjs);
+}
+
 
 // The new plan:
 // 1. Generate regions, one per chapter. (How many chapters? 16 might work)
@@ -106,10 +112,6 @@ let introText = ''
 
 let wizardName = entities[3].name
 let squirrelName = entities[4].name
-
-function adj() {
-  return _.sample(adjs);
-}
 
 let sayWords = getGibberish()
 introText += `"${sayWords}", ${squirrelName} chirped.\n\n`
