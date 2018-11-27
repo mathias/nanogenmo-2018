@@ -2,9 +2,14 @@
 
 Roughly: The idea this year is to generate a "journey" novel in the spirit of The Wizard of Oz or The Hobbit, with some absurd elements inspired by Alice in Wonderland and other novels meant more for kids than adults.
 
+My favorite quote from development:
+
+> "nor Trees shall sew When any spicy place spoke beyond houses amongst Any", Žarü Na chirped.
+
 ## Dev Diary
 
 In [this issue](https://github.com/NaNoGenMo/2018/issues/59) on the NaNoGenMo 2018 repo.
+
 
 ## Local setup
 
