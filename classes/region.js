@@ -41,14 +41,14 @@ const regionTypes = [
   {
     typeName: 'field',
     defaultAdjs: ['grassy', 'sunny'],
-    optionalSpecificAdjs: [],
+    optionalSpecificAdjs: ['flowering',],
     objects: [],
     placeToCamp: 0.85
   },
   {
     typeName: 'meadow',
     defaultAdjs: ['flower-scented', 'sunny'],
-    optionalSpecificAdjs: [],
+    optionalSpecificAdjs: ['muddy'],
     objects: [],
     placeToCamp: 0.85
   },

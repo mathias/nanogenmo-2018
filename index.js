@@ -34,7 +34,7 @@ function commaSepListStr(array) {
   let last = arrayCopy.pop()
   let output = ''
 
-  _.forEach(function(item) {
+  _.forEach(arrayCopy, function(item) {
     output += `${item}, `
   })
 
