@@ -11,7 +11,8 @@ const prefixes = [
   'Replica',
   'Omega',
   'Moth-eaten',
-  'Most Glorious'
+  'Most Glorious',
+  'Ancient'
 ]
 
 const materials = [
