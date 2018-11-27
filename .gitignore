@@ -66,5 +66,8 @@ inputs
 # Open source data used:
 corpora
 
+# generated files / output
+output/
+
 # MacOS
 .DS_Store
