@@ -21,7 +21,7 @@ const regionTypes = [
     typeName: 'desert',
     defaultAdjs: ['arid', 'dry'],
     optionalSpecificAdjs: ['sandy', 'ice-covered'],
-    objects: ['catcus', 'rusted car'],
+    objects: ['cactus', 'rusted car'],
     placeToCamp: 0.75
   },
   {
@@ -54,52 +54,52 @@ const regionTypes = [
   },
   {
     typeName: 'beach',
-    defaultAdjs: [],
-    optionalSpecificAdjs: [],
+    defaultAdjs: ['sandy', 'cool'],
+    optionalSpecificAdjs: ['misty', 'salty'],
     objects: [],
-    placeToCamp: 0.85
+    placeToCamp: 0.75
   },
   {
     typeName: 'steppes',
     defaultAdjs: [],
     optionalSpecificAdjs: [],
     objects: [],
-    placeToCamp: 0.85
+    placeToCamp: 0.5
   },
   {
     typeName: 'cave',
     defaultAdjs: [],
     optionalSpecificAdjs: [],
     objects: [],
-    placeToCamp: 0.85
+    placeToCamp: 0.25
   },
   {
     typeName: 'wasteland',
     defaultAdjs: [],
     optionalSpecificAdjs: [],
     objects: [],
-    placeToCamp: 0.85
+    placeToCamp: 0.25
   },
   {
     typeName: 'side of a river',
     defaultAdjs: [],
     optionalSpecificAdjs: [],
     objects: [],
-    placeToCamp: 0.85
+    placeToCamp: 0.75
   },
   {
     typeName: 'glacier',
     defaultAdjs: [],
     optionalSpecificAdjs: [],
     objects: [],
-    placeToCamp: 0.85
+    placeToCamp: 0.5
   },
   {
     typeName: 'mountaintop',
     defaultAdjs: [],
     optionalSpecificAdjs: [],
     objects: [],
-    placeToCamp: 0.85
+    placeToCamp: 0.5
   },
   {
     typeName: 'ruins', // what kind?
@@ -107,7 +107,7 @@ const regionTypes = [
     defaultAdjs: [],
     optionalSpecificAdjs: [],
     objects: [],
-    placeToCamp: 0.85
+    placeToCamp: 0.25
   },
   {
     typeName: 'small village',
@@ -115,7 +115,7 @@ const regionTypes = [
     defaultAdjs: [],
     optionalSpecificAdjs: [],
     objects: [],
-    placeToCamp: 0.85
+    placeToCamp: 0.9
   },
   {
     typeName: 'rope bridge',
@@ -123,7 +123,7 @@ const regionTypes = [
     defaultAdjs: [],
     optionalSpecificAdjs: [],
     objects: [],
-    placeToCamp: 0.85
+    placeToCamp: 0.9
   },
   {
     typeName: 'mines',
@@ -139,7 +139,7 @@ const regionTypes = [
     defaultAdjs: [],
     optionalSpecificAdjs: [],
     objects: [],
-    placeToCamp: 0.85
+    placeToCamp: 0.5
   },
   {
     typeName: 'schoolhouse',
@@ -147,7 +147,7 @@ const regionTypes = [
     defaultAdjs: [],
     optionalSpecificAdjs: [],
     objects: [],
-    placeToCamp: 0.85
+    placeToCamp: 0.5
   },
   {
     typeName: 'road',
@@ -155,7 +155,7 @@ const regionTypes = [
     defaultAdjs: [],
     optionalSpecificAdjs: [],
     objects: [],
-    placeToCamp: 0.85
+    placeToCamp: 0.75
   },
   {
     typeName: 'monolith',
@@ -163,7 +163,7 @@ const regionTypes = [
     defaultAdjs: [],
     optionalSpecificAdjs: [],
     objects: [],
-    placeToCamp: 0.85
+    placeToCamp: 0.75
   },
   {
     typeName: 'stadium',
@@ -171,7 +171,7 @@ const regionTypes = [
     defaultAdjs: [],
     optionalSpecificAdjs: [],
     objects: [],
-    placeToCamp: 0.85
+    placeToCamp: 0.75
   },
 ]
 
@@ -181,7 +181,8 @@ capitalize = function(str) {
 
 class Region {
   constructor(opts) {
-    return _.defaults(opts, this.pickType(opts.type))
+    this.opts = opts
+    return _.defaults(opts, this.pickType())
   }
 
   pickName() {
@@ -189,10 +190,10 @@ class Region {
 
   }
 
-  pickType(typeName) {
+  pickType() {
     let type = {}
 
-    if (typeName) {
+    if (this.opts && this.opts.type) {
       type = _.find(regionTypes, function(d) { return d.typeName == typeName })
     } else {
       type = _.sample(regionTypes)

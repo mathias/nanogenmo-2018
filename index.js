@@ -26,6 +26,23 @@ function randAdj() {
   return _.sample(adjs);
 }
 
+function commaSepListStr(array) {
+  if (array.length == 0) { return '' }
+  if (array.length == 1) { return array[0] }
+
+  let arrayCopy = _.clone(array)
+  let last = arrayCopy.pop()
+  let output = ''
+
+  _.forEach(function(item) {
+    output += `${item}, `
+  })
+
+  output += `and ${last}`
+
+  return output
+}
+
 // The new plan:
 // 1. Generate regions, one per chapter. (How many chapters? 16 might work)
 // 2. Generate peoples for the regions -- "animal peoples" needs generator
@@ -49,8 +66,9 @@ let worldLanguage = new Language({
 });
 worldLanguage.langName = `Ancient ${worldLanguage.langName}`
 
-const bookTitle = `The Road to ${worldLanguage.makeName()}`
-console.log(bookTitle);
+let journeyWords = ['Journey to', 'Trip to', 'Trek to', 'Bridge to', 'Tour of', 'Voyage to', 'Departure to', 'Flight from']
+const bookTitle = `The ${_.sample(journeyWords)} to ${worldLanguage.makeName()}`
+console.log(bookTitle + '\n');
 
 let chapters = []
 
@@ -78,43 +96,48 @@ entities.push(new Character({
   properties: {age: _.random(11,13), lastName: childrenLastName}
 }));
 
+function justChildren(entities) {
+  return _.filter(entities, function(ent) { return ent.tags && ent.tags.includes('child') })
+}
 
-let wizardNames = ['Hilde', 'Noirin', 'Butterflax', 'Anise', 'Matilda']
-entities.push(new Character({
-  name: _.sample(wizardNames),
-  tags: ['character', 'wizard'],
-  properties: {
-    age: _.random(100,399),
-    profession: 'Wizard'
-  }
-}));
+//let wizardNames = ['Hilde', 'Noirin', 'Butterflax', 'Anise', 'Matilda']
+//entities.push(new Character({
+  //name: _.sample(wizardNames),
+  //tags: ['character', 'wizard'],
+  //properties: {
+    //age: _.random(100,399),
+    //profession: 'Wizard'
+  //}
+//}));
 
-let squirrel = new Character({
-  name: worldLanguage.makeName(),
-  tags: ['character'],
-  properties: {
-    race: 'squirrel person',
-    age: _.random(1,10),
-    languages: {
-      spoken: [worldLanguage.langName],
-      understood: [worldLanguage.langName],
-      read: [worldLanguage.langName]
-    }
-  }
-})
-entities.push(squirrel)
+//let squirrel = new Character({
+  //name: worldLanguage.makeName(),
+  //tags: ['character'],
+  //properties: {
+    //race: 'squirrel person',
+    //age: _.random(1,10),
+    //languages: {
+      //spoken: [worldLanguage.langName],
+      //understood: [worldLanguage.langName],
+      //read: [worldLanguage.langName]
+    //}
+  //}
+//})
+//entities.push(squirrel)
+
+//console.log(justChildren(entities))
 
 // initial entities + world state
-console.log(entities);
+//console.log(entities);
 
 // Introduction
 let introText = ''
 
-let wizardName = entities[3].name
-let squirrelName = entities[4].name
+//let wizardName = entities[3].name
+//let squirrelName = entities[4].name
 
-let sayWords = getGibberish()
-introText += `"${sayWords}", ${squirrelName} chirped.\n\n`
+//let sayWords = getGibberish()
+//introText += `"${sayWords}",  ${squirrelName} chirped.\n\n`
 
 chapters.push({title: 'Introduction', text: introText})
 
@@ -129,54 +152,59 @@ chapters.push({title: 'Introduction', text: introText})
 // 7. Have locals reward/thank characters
 // 8. Describe how characters move on to next region
 
-let str= ''
-let chapterNum = 1
-chapters.push({title: `Chapter ${chapterNum}.`, text: str})
+//let str= ''
+//let chapterNum = 1
+//chapters.push({title: `Chapter ${chapterNum}.`, text: str})
 
 // Ending
-chapters.push({title: '', text: 'THE END'})
 
 // Output (TODO: PDF generation rendering here)
-chapters.map(function(chapter) {
-  console.log(chapter.title + '\n')
-  console.log(chapter.text + '\n\n')
-})
+//chapters.map(function(chapter) {
+  //console.log(chapter.title + '\n')
+  //console.log(chapter.text + '\n\n')
+//})
 
-// TODO: instead of templating in Tracery/Seaduck, do string templates w/ local
-// names using closures? Like this:
-//let foo = (function(squirrelNomer, wizardNomer) {
-  //return `${squirrelNomer} and ${wizardNomer}`
-//})(squirrelName, wizardName)
-//console.log(foo)
+//let conflictTypes = [
+  //'fetchMagicObject',
+  //'findLostDog',
+  //'towersOfHanoi',
+  //'saveCompanionFromEnemies',
+  //'freeCompanionFromTrap',
+  //'scaredByHarmless',
+  //'impassableObstacle',
+  //'escapeEnchantment',
+  //'meetNewAllies',
+  //'passGatekeeper',
+  //'solveARiddle',
+  //'fightAnEnemy',
+//]
 
-let conflictTypes = [
-  'fetchMagicObject',
-  'findLostDog',
-  'towersOfHanoi',
-  'saveCompanionFromEnemies',
-  'freeCompanionFromTrap',
-  'scaredByHarmless',
-  'impassableObstacle',
-  'escapeEnchantment',
-  'meetNewAllies',
-  'passGatekeeper',
-  'solveARiddle',
-  'fightAnEnemy',
-]
-
-let regions = Array(16).map(function(type) { return new Region() })
-
-//let village = new Region({type: 'village', name: `the village of the Squirrel People`, quest: 'findSquirrelThing'})
-//regions = _.concat(village, regions)
-
-//let villainHideout = new Region({type: 'evil castle', name: `the Castle of the Villain`, quest: 'theFinale'})
-//regions = _.concat(regions, villainHideout)
-
-//console.log(regions)
+let regions = []
+for(let i = 0; i < 16; i++) {
+  regions.push(new Region())
+}
 
 // Character proceed through regions in above random order
-console.log(regions.map(function(region) {
-  let modeTransport = _.sample(['walk', 'fly', 'sail', 'run', 'skip', 'crawl', 'teleport'])
-  let s = region.typeName
-  return `They ${modeTransport} through ${s}, overcome conflicts and continue on.\n`
-}))
+_.forEach(regions, function(region) {
+  //let modeTransport = _.sample(['walk', 'fly', 'sail', 'run', 'skip', 'crawl', 'teleport'])
+  let modeTransport = 'walk'
+  let str = ''
+
+  str += `The ${childrenLastName} children found themselves in ${region.typeName}. It was ${commaSepListStr(region.defaultAdjs)}.`
+
+  if (region.optionalSpecificAdjs.length > 0 && Math.random() > 0.5) {
+    str += ` Additionally, it was ${_.sample(region.optionalSpecificAdjs)}.`
+  }
+
+  if (region.objects.length > 0) {
+    str += ` One could find ${commaSepListStr(region.objects)} here.`
+  }
+
+  if (Math.random() < region.placeToCamp) {
+    str += _.sample([' They were able to find a place to sleep for the night.', ' They set up camp here.'])
+  } else {
+    str += _.sample([' There was not a good place to camp, and they continued on.'])
+  }
+
+  console.log(str)
+})
