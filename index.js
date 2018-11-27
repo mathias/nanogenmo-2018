@@ -6,6 +6,7 @@ const tracery = require('tracery-grammar')
 const Artifact = require('./classes/artifact')
 const Character = require('./classes/character')
 const Language = require('./classes/language')
+const Region = require('./classes/region')
 
 // Data files:
 const adjs = JSON.parse(fs.readFileSync('corpora/data/words/adjs.json', 'utf8'))["adjs"]
@@ -148,30 +149,6 @@ chapters.map(function(chapter) {
 //})(squirrelName, wizardName)
 //console.log(foo)
 
-let regionTypes = [
-  'swamp',
-  'forest',
-  'field',
-  'meadow',
-  'beach',
-  'ruins',
-  'small village',
-  'rope bridge',
-  'steppes',
-  'cave',
-  'wasteland',
-  'desert',
-  'abandoned stadium',
-  'river',
-  'glacier',
-  'mountaintop',
-  'mines',
-  'abandoned factory',
-  'abandoned schoolhouse',
-  'empty road',
-  'ruined monolith'
-]
-
 let conflictTypes = [
   'fetchMagicObject',
   'findLostDog',
@@ -187,29 +164,19 @@ let conflictTypes = [
   'fightAnEnemy',
 ]
 
-class Region {
-  constructor(opts) {
-    return _.defaults(opts, {
-      type: _.sample(regionTypes),
-      name: '',
-      quest: _.sample(conflictTypes),
-    })
-  }
-}
+let regions = Array(16).map(function(type) { return new Region() })
 
-let regions = _.shuffle(regionTypes).slice(0,16).map(function(type) { return new Region({type: type}) })
+//let village = new Region({type: 'village', name: `the village of the Squirrel People`, quest: 'findSquirrelThing'})
+//regions = _.concat(village, regions)
 
-let village = new Region({type: 'village', name: `the village of the Squirrel People`, quest: 'findSquirrelThing'})
-regions = _.concat(village, regions)
-
-let villainHideout = new Region({type: 'evil castle', name: `the Castle of the Villain`, quest: 'theFinale'})
-regions = _.concat(regions, villainHideout)
+//let villainHideout = new Region({type: 'evil castle', name: `the Castle of the Villain`, quest: 'theFinale'})
+//regions = _.concat(regions, villainHideout)
 
 //console.log(regions)
 
 // Character proceed through regions in above random order
 console.log(regions.map(function(region) {
   let modeTransport = _.sample(['walk', 'fly', 'sail', 'run', 'skip', 'crawl', 'teleport'])
-  let s = region.name || region.type
-  return `They ${modeTransport} through ${s}, overcome ${region.quest} and continue on.\n`
+  let s = region.typeName
+  return `They ${modeTransport} through ${s}, overcome conflicts and continue on.\n`
 }))

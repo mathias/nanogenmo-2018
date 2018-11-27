@@ -10,7 +10,8 @@ const prefixes = [
   'Sticky',
   'Replica',
   'Omega',
-  'Moth-eaten'
+  'Moth-eaten',
+  'Most Glorious'
 ]
 
 const materials = [
