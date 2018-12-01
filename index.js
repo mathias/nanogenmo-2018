@@ -200,6 +200,11 @@ _.forEach(regions, function(region) {
     str += ` One could find ${commaSepListStr(region.objects)} here.`
   }
 
+  // Events
+  // let events = generateEvents(region)
+  // _.forEach(events, function(event) { ??? })
+
+  // At end:
   if (Math.random() < region.placeToCamp) {
     str += _.sample([' They were able to find a place to sleep for the night.', ' They set up camp here.'])
   } else {
